@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "esbuild src/main.js --bundle --minify --format=iife --platform=browser --outfile=editor/app.js",
+    "build": "node scripts/build.js",
     "test": "node --test"
   },
   "dependencies": {

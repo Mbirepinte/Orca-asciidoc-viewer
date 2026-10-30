@@ -26,4 +26,4 @@ npm run build
 npm test
 ```
 
-`editor/app.js` is committed so Orca can install this repository without running a build.
+`editor/index.html` and `editor/app.js` are generated and committed so Orca can install this repository without running a build. Orca loads custom editors as sandboxed inline documents, so the generated HTML embeds the CSS and JavaScript from `editor/style.css` and `src/`.

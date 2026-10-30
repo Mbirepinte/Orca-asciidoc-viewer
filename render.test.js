@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { readFile } from 'node:fs/promises'
 import { JSDOM } from 'jsdom'
 
 const dom = new JSDOM('<!doctype html><html><body></body></html>')
@@ -35,4 +36,30 @@ test('sanitizes passthrough HTML and unsafe URLs', () => {
   const { container } = html('= Guide\n\n++++\n<script>alert(1)</script><a href="javascript:alert(1)">bad</a>\n++++')
   assert.equal(container.querySelector('script'), null)
   assert.equal(container.querySelector('a[href^="javascript:"]'), null)
+})
+
+test('opens a document in Orca without loading external assets', async () => {
+  const page = new JSDOM(await readFile('editor/index.html', 'utf8'), {
+    runScripts: 'dangerously',
+    beforeParse(window) {
+      window.orca = {
+        document: {
+          onDidChange() {},
+          get: async () => ({
+            content: { kind: 'text', text: '= A live document\n\nHello, Orca.' },
+            version: 1,
+            readOnly: false
+          })
+        },
+        on() {}
+      }
+    }
+  })
+
+  await new Promise(resolve => setTimeout(resolve, 0))
+  assert.equal(page.window.document.querySelector('link[rel="stylesheet"], script[src]'), null)
+  assert.equal(page.window.getComputedStyle(page.window.document.querySelector('.layout')).display, 'grid')
+  assert.match(page.window.document.querySelector('#source').value, /A live document/)
+  assert.equal(page.window.document.querySelector('#preview h1')?.textContent, 'A live document')
+  page.window.close()
 })
