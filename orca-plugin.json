@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/stablyai/orca/main/docs/schemas/plugins/orca-plugin.v2.schema.json",
+  "manifestVersion": 2,
+  "id": "asciidoc-viewer",
+  "publisher": "mbirepinte",
+  "name": "AsciiDoc Viewer",
+  "version": "0.1.0",
+  "execution": "sandboxed-ui",
+  "description": "Edit AsciiDoc source beside a live preview in Orca.",
+  "author": { "name": "Mickael Birepinte" },
+  "repository": "https://github.com/Mbirepinte/Orca-asciidoc-viewer",
+  "license": "MIT",
+  "engines": { "orca": ">=1.4.245" },
+  "pluginApi": 1,
+  "contributes": {
+    "customEditors": [{
+      "id": "asciidoc",
+      "title": "AsciiDoc Preview",
+      "extensions": [".adoc"],
+      "entry": "editor/index.html",
+      "priority": "default",
+      "contentKind": "text"
+    }]
+  },
+  "capabilities": []
+}

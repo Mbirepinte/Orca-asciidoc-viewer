@@ -1,0 +1,24 @@
+:root { color-scheme: light dark; font: 14px system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html, body, .layout { width: 100%; height: 100%; margin: 0; }
+body { background: var(--orca-background, #fff); color: var(--orca-foreground, #222); }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.pane { min-width: 0; display: flex; flex-direction: column; }
+.source-pane { border-right: 1px solid var(--orca-border, #8885); }
+header { min-height: 38px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-bottom: 1px solid var(--orca-border, #8885); font-weight: 600; }
+#status { font-weight: 400; opacity: .75; }
+#source { flex: 1; width: 100%; min-height: 0; resize: none; border: 0; outline: 0; padding: 16px; background: transparent; color: inherit; font: 13px/1.55 ui-monospace, monospace; tab-size: 2; }
+#source:disabled { opacity: .7; }
+.preview-pane { overflow: auto; }
+#notice { padding: 10px 16px; background: color-mix(in srgb, var(--orca-primary, #d78b21) 15%, transparent); }
+#preview { padding: 20px 28px 48px; line-height: 1.55; overflow-wrap: anywhere; }
+#preview > :first-child { margin-top: 0; }
+#preview h1, #preview h2, #preview h3 { line-height: 1.25; margin-top: 1.4em; }
+#preview a { color: var(--orca-primary, #4b77cc); }
+#preview pre, #preview code { font-family: ui-monospace, monospace; }
+#preview pre { overflow: auto; padding: 12px; background: color-mix(in srgb, var(--orca-foreground, #222) 7%, transparent); border-radius: 6px; }
+#preview table { border-collapse: collapse; max-width: 100%; display: block; overflow-x: auto; }
+#preview th, #preview td { border: 1px solid var(--orca-border, #8885); padding: 6px 10px; }
+#preview blockquote { border-left: 3px solid var(--orca-primary, #4b77cc); padding-left: 14px; margin-left: 0; }
+.unavailable { border: 1px dashed var(--orca-border, #8888); border-radius: 4px; padding: 4px 7px; font-style: italic; }
+@media (max-width: 700px) { .layout { grid-template-columns: 1fr; grid-template-rows: minmax(180px, 1fr) minmax(180px, 1fr); } .source-pane { border-right: 0; border-bottom: 1px solid var(--orca-border, #8885); } }
