@@ -7,20 +7,33 @@
   "version": "0.1.0",
   "execution": "sandboxed-ui",
   "description": "Edit AsciiDoc source beside a live preview in Orca.",
-  "author": { "name": "Mickael Birepinte" },
+  "icon": "assets/icon.png",
+  "cover": {
+    "path": "assets/cover.png",
+    "alt": "AsciiDoc source beside its rendered preview, with a block being edited in place"
+  },
+  "author": {
+    "name": "Mickael Birepinte"
+  },
   "repository": "https://github.com/Mbirepinte/Orca-asciidoc-viewer",
   "license": "MIT",
-  "engines": { "orca": ">=1.4.245" },
+  "engines": {
+    "orca": ">=1.4.245"
+  },
   "pluginApi": 1,
   "contributes": {
-    "customEditors": [{
-      "id": "asciidoc",
-      "title": "AsciiDoc Preview",
-      "extensions": [".adoc"],
-      "entry": "editor/index.html",
-      "priority": "default",
-      "contentKind": "text"
-    }]
+    "customEditors": [
+      {
+        "id": "asciidoc",
+        "title": "AsciiDoc Preview",
+        "extensions": [
+          ".adoc"
+        ],
+        "entry": "editor/index.html",
+        "priority": "default",
+        "contentKind": "text"
+      }
+    ]
   },
   "capabilities": []
 }

@@ -1,9 +1,12 @@
 import { renderAsciiDoc } from './render.js'
+import { getBlockSource, replaceBlock } from './blockEdit.js'
 
 const source = document.querySelector('#source')
 const preview = document.querySelector('#preview')
 const notice = document.querySelector('#notice')
 const status = document.querySelector('#status')
+const layout = document.querySelector('.layout')
+const modeButtons = document.querySelectorAll('[data-mode-button]')
 
 let version
 let readOnly = false
@@ -12,6 +15,18 @@ let pendingTimer
 let sending = false
 let sendPromise = Promise.resolve()
 let conflicted = false
+let mode = 'split'
+let editing
+
+try { if (localStorage.getItem('asciidoc-mode') === 'preview') mode = 'preview' } catch {}
+
+function setMode(next) {
+  closeBlockEditor(true)
+  mode = next
+  layout.dataset.mode = mode
+  for (const button of modeButtons) button.setAttribute('aria-pressed', String(button.dataset.modeButton === mode))
+  try { localStorage.setItem('asciidoc-mode', mode) } catch {}
+}
 
 function showStatus(message) { status.textContent = message }
 
@@ -59,6 +74,7 @@ async function sendPendingEdit() {
 }
 
 function receive(doc) {
+  closeBlockEditor(true)
   if (doc.content?.kind !== 'text') {
     showStatus('Unsupported document content')
     return
@@ -80,12 +96,72 @@ function receive(doc) {
   render()
 }
 
-source.addEventListener('input', () => {
+function sourceChanged() {
   render()
   showStatus('Updating…')
   clearTimeout(pendingTimer)
   pendingTimer = setTimeout(sendPendingEdit, 250)
+}
+
+source.addEventListener('input', sourceChanged)
+
+function fitBlockEditor(area) {
+  area.style.height = 'auto'
+  area.style.height = `${area.scrollHeight}px`
+}
+
+// Replaces the clicked preview block by a textarea holding its AsciiDoc source.
+function openBlockEditor(element) {
+  if (editing || readOnly || conflicted) return
+  const start = Number(element.dataset.lineStart)
+  const end = Number(element.dataset.lineEnd)
+  const text = getBlockSource(source.value, start, end)
+  if (text === null) return
+  const area = document.createElement('textarea')
+  area.className = 'block-editor'
+  area.spellcheck = false
+  area.value = text
+  area.setAttribute('aria-label', 'Edit AsciiDoc block')
+  editing = { element, area, start, end, original: text }
+  area.addEventListener('input', () => fitBlockEditor(area))
+  area.addEventListener('blur', () => closeBlockEditor(true))
+  area.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      closeBlockEditor(false)
+    } else if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault()
+      closeBlockEditor(true)
+    }
+  })
+  element.hidden = true
+  element.after(area)
+  fitBlockEditor(area)
+  area.focus()
+}
+
+function closeBlockEditor(commit) {
+  if (!editing) return
+  const { element, area, start, end, original } = editing
+  editing = undefined
+  const text = area.value
+  area.remove()
+  element.hidden = false
+  if (!commit || text === original) return
+  const next = replaceBlock(source.value, start, end, text)
+  if (next === null || next === source.value) return
+  source.value = next
+  sourceChanged()
+}
+
+preview.addEventListener('click', event => {
+  if (mode !== 'preview' || event.target.closest('a[href], .block-editor')) return
+  const element = event.target.closest('[data-line-start]')
+  if (element) openBlockEditor(element)
 })
+
+for (const button of modeButtons) button.addEventListener('click', () => setMode(button.dataset.modeButton))
+setMode(mode)
 
 window.orca.document.onDidChange(receive)
 window.orca.on('editor.flush', sendPendingEdit)

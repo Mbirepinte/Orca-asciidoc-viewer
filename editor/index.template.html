@@ -7,13 +7,19 @@
     <!-- INLINE_STYLE -->
   </head>
   <body>
-    <main class="layout">
+    <main class="layout" data-mode="split">
       <section class="pane source-pane" aria-label="AsciiDoc source">
         <header>Source <span id="status" role="status" aria-live="polite"></span></header>
         <textarea id="source" spellcheck="false" aria-label="AsciiDoc source"></textarea>
       </section>
       <section class="pane preview-pane" aria-label="AsciiDoc preview">
-        <header>Preview</header>
+        <header>
+          <span>Preview</span>
+          <span class="modes" role="group" aria-label="View mode">
+            <button type="button" data-mode-button="split" aria-pressed="true">Split</button>
+            <button type="button" data-mode-button="preview" aria-pressed="false">Preview</button>
+          </span>
+        </header>
         <div id="notice" hidden></div>
         <article id="preview" class="asciidoc"></article>
       </section>

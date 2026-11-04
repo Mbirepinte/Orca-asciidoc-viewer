@@ -1,6 +1,6 @@
 # AsciiDoc Viewer for Orca
 
-An Orca custom editor for `.adoc` files. Edit the source on the left and see a live AsciiDoc preview on the right. Orca manages the document buffer, saving and external changes.
+An Orca custom editor for `.adoc` files. Two modes, switched from the buttons in the preview header: **Split** (source on the left, live AsciiDoc preview on the right) and **Preview** (preview only, editable in place: click a block — heading, paragraph, list, code, table… — to edit its AsciiDoc source, then click away or press Ctrl/Cmd+Enter to apply, Esc to cancel). Orca manages the document buffer, saving and external changes.
 
 ## Install for development
 

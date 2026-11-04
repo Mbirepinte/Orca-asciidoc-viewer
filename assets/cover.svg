@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b2540"/>
+      <stop offset="1" stop-color="#3a2a5c"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4b77cc"/>
+      <stop offset="1" stop-color="#d78b21"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#000" flood-opacity=".45"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <circle cx="1450" cy="120" r="320" fill="#4b77cc" opacity=".12"/>
+  <circle cx="120" cy="900" r="280" fill="#d78b21" opacity=".10"/>
+
+  <text x="100" y="170" font-family="Segoe UI, Arial, sans-serif" font-size="84" font-weight="700" fill="#fff">AsciiDoc Viewer</text>
+  <text x="100" y="236" font-family="Segoe UI, Arial, sans-serif" font-size="36" fill="#c9d3ee">Live preview and in-place editing for Orca</text>
+  <rect x="100" y="262" width="180" height="6" rx="3" fill="url(#accent)"/>
+
+  <!-- editor window -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="330" width="1400" height="570" rx="18" fill="#12192e"/>
+  </g>
+  <clipPath id="win"><rect x="100" y="330" width="1400" height="570" rx="18"/></clipPath>
+  <g clip-path="url(#win)">
+    <rect x="100" y="330" width="700" height="570" fill="#141c33"/>
+    <rect x="800" y="330" width="700" height="570" fill="#f7f8fb"/>
+    <rect x="100" y="330" width="1400" height="46" fill="#0d1325"/>
+    <rect x="799" y="330" width="2" height="570" fill="#2b3556"/>
+    <circle cx="134" cy="353" r="7" fill="#ff5f57"/><circle cx="158" cy="353" r="7" fill="#febc2e"/><circle cx="182" cy="353" r="7" fill="#28c840"/>
+    <text x="230" y="359" font-family="Segoe UI, Arial, sans-serif" font-size="16" fill="#8d9bc4">guide.adoc</text>
+    <g font-family="Consolas, 'Courier New', monospace" font-size="25">
+      <text x="136" y="430" fill="#e8b45d">= Getting started</text>
+      <text x="136" y="474" fill="#8d9bc4">:toc:</text>
+      <text x="136" y="540" fill="#e8b45d">== Install</text>
+      <text x="136" y="584" fill="#d6dcf0">Edit the *source* or click a block</text>
+      <text x="136" y="618" fill="#d6dcf0">in the preview.</text>
+      <text x="136" y="672" fill="#7fb4ff">* Split mode</text>
+      <text x="136" y="706" fill="#7fb4ff">* Editable preview</text>
+      <text x="136" y="760" fill="#6fcf97">[source,js]</text>
+      <text x="136" y="794" fill="#8d9bc4">----</text>
+      <text x="136" y="828" fill="#d6dcf0">npm run build</text>
+      <text x="136" y="862" fill="#8d9bc4">----</text>
+    </g>
+    <g font-family="Segoe UI, Arial, sans-serif">
+      <text x="850" y="436" font-size="44" font-weight="700" fill="#1d2433">Getting started</text>
+      <rect x="850" y="456" width="600" height="2" fill="#dde2ee"/>
+      <text x="850" y="520" font-size="32" font-weight="600" fill="#1d2433">Install</text>
+      <text x="850" y="572" font-size="24" fill="#3a4258">Edit the <tspan font-weight="700">source</tspan> or click a block</text>
+      <text x="850" y="606" font-size="24" fill="#3a4258">in the preview.</text>
+      <circle cx="862" cy="660" r="5" fill="#4b77cc"/><text x="882" y="668" font-size="24" fill="#3a4258">Split mode</text>
+      <circle cx="862" cy="700" r="5" fill="#4b77cc"/><text x="882" y="708" font-size="24" fill="#3a4258">Editable preview</text>
+      <rect x="850" y="746" width="600" height="116" rx="8" fill="#eceff6"/>
+      <text x="874" y="812" font-family="Consolas, 'Courier New', monospace" font-size="24" fill="#1d2433">npm run build</text>
+      <rect x="846" y="548" width="610" height="76" rx="8" fill="none" stroke="#4b77cc" stroke-width="2" stroke-dasharray="8 6"/>
+    </g>
+  </g>
+</svg>
