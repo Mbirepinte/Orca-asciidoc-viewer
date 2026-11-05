@@ -1,0 +1,71 @@
+= Orbital Garden Handbook
+Ada Fictional <ada@example.invalid>
+v0.3, 2026-11-05
+:toc:
+
+[abstract]
+A fictitious handbook used to try out the AsciiDoc Viewer plugin: headings, lists, tables, code and admonitions.
+
+== Getting started
+
+Welcome to the *Orbital Garden*, a made-up greenhouse that floats in low orbit. Every plant here is _imaginary_, but the markup is real.
+
+NOTE: Switch to *Preview* mode and click any block to edit its source in place.
+
+=== Planting checklist
+
+* Check the gravity setting
+* Prepare the substrate
+** Moon dust
+** Compost
+* Water sparingly
+
+. Open the airlock
+. Place the seedling
+. Close the airlock
+
+== Plant catalogue
+
+[cols="2,1,1",options="header"]
+|===
+|Plant |Light (h/day) |Difficulty
+
+|Zero-G fern
+|12
+|Easy
+
+|Comet orchid
+|16
+|Hard
+
+|Nebula moss
+|8
+|Medium
+|===
+
+== Watering script
+
+[source,js]
+.water.js
+----
+const schedule = ['mon', 'thu']
+
+for (const day of schedule) {
+  console.log(`Watering on ${day}`)
+}
+----
+
+WARNING: Never water the comet orchid during a solar flare.
+
+[quote, Ada Fictional]
+____
+A garden is just a slow program running on sunlight.
+____
+
+== Resources
+
+See the https://asciidoc.org[AsciiDoc project] for the full syntax.
+
+image::garden.png[Garden overview]
+
+include::appendix.adoc[]

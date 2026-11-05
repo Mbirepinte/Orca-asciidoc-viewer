@@ -4,7 +4,7 @@
   "id": "asciidoc-viewer",
   "publisher": "mbirepinte",
   "name": "AsciiDoc Viewer",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "execution": "sandboxed-ui",
   "description": "Edit AsciiDoc source beside a live preview in Orca.",
   "icon": "assets/icon.png",
