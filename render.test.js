@@ -41,6 +41,8 @@ test('sanitizes passthrough HTML and unsafe URLs', () => {
 
 test('opens a document in Orca without loading external assets', async () => {
   const page = new JSDOM(await readFile('editor/index.html', 'utf8'), {
+    // Orca's srcdoc frames inherit an absolute base URL; viz-global.js resolves itself against it.
+    url: 'https://orca.invalid/',
     runScripts: 'dangerously',
     beforeParse(window) {
       window.orca = {
@@ -92,6 +94,8 @@ test('replaces and reads blocks by line range', () => {
 test('edits a block from the preview mode', async () => {
   const sent = []
   const page = new JSDOM(await readFile('editor/index.html', 'utf8'), {
+    // Orca's srcdoc frames inherit an absolute base URL; viz-global.js resolves itself against it.
+    url: 'https://orca.invalid/',
     runScripts: 'dangerously',
     beforeParse(window) {
       window.orca = {
@@ -118,4 +122,25 @@ test('edits a block from the preview mode', async () => {
   await new Promise(resolve => setTimeout(resolve, 300))
   assert.deepEqual(sent, ['= A\n\nHello, world.\n\nBye.'])
   page.window.close()
+})
+
+test('replaces plantuml blocks with diagram placeholders', () => {
+  const source = '= T\n\n[plantuml, flow, png]\n----\nA -> B\n----\n\n[plantuml]\n....\n@startuml\nclass C\n@enduml\n....\n\n[source,java]\n----\nint a;\n----'
+  const { result, container } = html(source)
+  assert.deepEqual(result.diagrams.map(diagram => diagram.source), ['@startuml\nA -> B\n@enduml', '@startuml\nclass C\n@enduml'])
+  const blocks = [...container.querySelectorAll('.plantuml')]
+  assert.equal(blocks.length, 2)
+  assert.equal(blocks[0], result.diagrams[0].element)
+  assert.equal(blocks[0].parentElement.dataset.lineStart, '3')
+  assert.equal(blocks[0].parentElement.dataset.lineEnd, '6')
+  assert.equal(container.querySelectorAll('pre').length, 1)
+  assert.equal(container.innerHTML.includes('adoc-plantuml'), false)
+})
+
+test('marks plantuml diagrams from files as unavailable', () => {
+  const { result, container } = html('= T\n\n[plantuml, x, png]\n----\ninclude::diagrams/x.puml[]\n----\n\nplantuml::y.puml[png]')
+  assert.deepEqual(result.diagrams, [])
+  assert.equal(result.hasIncludes, true)
+  assert.equal(container.querySelector('.plantuml .unavailable')?.textContent, 'Diagram unavailable: diagrams/x.puml')
+  assert.equal(container.querySelector('a[href]'), null)
 })

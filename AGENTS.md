@@ -28,4 +28,4 @@ The available history contains one short, imperative commit subject (`render tes
 
 ## Security & Resource Limits
 
-Keep Asciidoctor in secure mode and sanitize generated HTML. The editor cannot resolve adjacent files: includes and images must remain unavailable in the preview, and relative links must not become navigable. Do not add remote scripts or asset fetching to the preview.
+Keep Asciidoctor in secure mode and sanitize generated HTML. The editor cannot resolve adjacent files: includes and images must remain unavailable in the preview, and relative links must not become navigable. Do not add remote scripts or asset fetching to the preview. PlantUML diagrams are rendered locally by the bundled `@plantuml/core` engine and inserted only as `<img>` data URIs, never as inline SVG.

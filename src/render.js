@@ -61,6 +61,41 @@ function applyRanges(root, header) {
   if (header && title) setRange(title, header.start, header.end)
 }
 
+// In secure mode Asciidoctor turns `include::x[]` into this line instead of reading x.
+const INCLUDE_MARKER = /^link:(\S+)\[role=include\]$/gm
+
+// Marks `[plantuml]` listing/literal blocks; their content is replaced by a diagram placeholder.
+function markDiagrams(doc) {
+  return doc.findBy(block => block.getStyle?.() === 'plantuml' && ['listing', 'literal'].includes(block.getContext()))
+    .map((block, index) => {
+      block.addRole(`adoc-plantuml-${index}`)
+      return block.getSource()
+    })
+}
+
+function placeDiagrams(root, sources, document) {
+  const diagrams = []
+  sources.forEach((text, index) => {
+    const element = root.querySelector(`.adoc-plantuml-${index}`)
+    const content = element?.querySelector('.content')
+    if (!content) return
+    element.classList.remove(`adoc-plantuml-${index}`)
+    const placeholder = document.createElement('div')
+    placeholder.className = 'plantuml'
+    const files = [...text.matchAll(INCLUDE_MARKER)].map(match => match[1])
+    if (files.length) {
+      const unavailable = document.createElement('span')
+      unavailable.className = 'unavailable'
+      unavailable.textContent = `Diagram unavailable: ${files.join(', ')}`
+      placeholder.append(unavailable)
+    } else {
+      diagrams.push({ element: placeholder, source: /^\s*@start/m.test(text) ? text : `@startuml\n${text}\n@enduml` })
+    }
+    content.replaceWith(placeholder)
+  })
+  return diagrams
+}
+
 export function renderAsciiDoc(source, document) {
   // SECURE keeps passthrough HTML and includes from reaching the preview.
   const doc = asciidoctor.load(source, {
@@ -70,6 +105,7 @@ export function renderAsciiDoc(source, document) {
     attributes: { showtitle: true, 'allow-uri-read': false }
   })
   const header = annotate(doc, source)
+  const diagramSources = markDiagrams(doc)
   const html = doc.convert()
   const clean = DOMPurify.sanitize(html, {
     FORBID_TAGS: ['script', 'style', 'iframe', 'object', 'embed', 'form'],
@@ -77,6 +113,7 @@ export function renderAsciiDoc(source, document) {
   })
   const template = document.createElement('template')
   template.innerHTML = clean
+  const diagrams = placeDiagrams(template.content, diagramSources, document)
   applyRanges(template.content, header)
 
   // The frame has no file path and cannot read adjacent files. Do not request
@@ -99,7 +136,8 @@ export function renderAsciiDoc(source, document) {
   }
   return {
     fragment: template.content,
-    hasIncludes: /^include::/m.test(source),
+    diagrams,
+    hasIncludes: /^(?:include|plantuml)::/m.test(source),
     hasImages: /(?:^|\s)image::?[^\s\[]+\[/m.test(source)
   }
 }

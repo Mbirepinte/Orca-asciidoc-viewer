@@ -1,4 +1,5 @@
 import { renderAsciiDoc } from './render.js'
+import { renderDiagrams } from './plantuml.js'
 import { getBlockSource, replaceBlock } from './blockEdit.js'
 
 const source = document.querySelector('#source')
@@ -34,6 +35,7 @@ function render() {
   try {
     const result = renderAsciiDoc(source.value, document)
     preview.replaceChildren(result.fragment)
+    renderDiagrams(result.diagrams)
     const unavailable = []
     if (result.hasIncludes) unavailable.push('includes')
     if (result.hasImages) unavailable.push('images')

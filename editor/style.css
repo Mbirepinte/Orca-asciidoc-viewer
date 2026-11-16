@@ -21,6 +21,9 @@ header { min-height: 38px; display: flex; align-items: center; justify-content: 
 #preview th, #preview td { border: 1px solid var(--orca-border, #8885); padding: 6px 10px; }
 #preview blockquote { border-left: 3px solid var(--orca-primary, #4b77cc); padding-left: 14px; margin-left: 0; }
 .unavailable { border: 1px dashed var(--orca-border, #8888); border-radius: 4px; padding: 4px 7px; font-style: italic; }
+#preview .plantuml { overflow-x: auto; }
+#preview .plantuml img { display: block; max-width: 100%; background: #fff; border-radius: 4px; }
+#preview .plantuml-error { color: #c33; white-space: pre-wrap; }
 .modes { display: inline-flex; border: 1px solid var(--orca-border, #8885); border-radius: 6px; overflow: hidden; }
 .modes button { font: inherit; font-size: 12px; font-weight: 400; padding: 3px 10px; border: 0; background: transparent; color: inherit; cursor: pointer; }
 .modes button[aria-pressed="true"] { background: color-mix(in srgb, var(--orca-primary, #4b77cc) 22%, transparent); font-weight: 600; }

@@ -4,9 +4,13 @@ import { readFile, writeFile } from 'node:fs/promises'
 const bundle = await build({
   entryPoints: ['src/main.js'],
   bundle: true,
-  minify: true,
+  // minifySyntax breaks labelled statements in @plantuml/core (TeaVM output).
+  minifyWhitespace: true,
+  minifyIdentifiers: true,
   format: 'iife',
   platform: 'browser',
+  // viz-global.js requires 'url' only when run under Node, never in the editor frame.
+  external: ['url'],
   write: false
 })
 
