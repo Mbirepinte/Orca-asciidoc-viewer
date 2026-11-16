@@ -11,6 +11,7 @@ const bundle = await build({
   platform: 'browser',
   // viz-global.js requires 'url' only when run under Node, never in the editor frame.
   external: ['url'],
+  loader: { '.gz': 'base64' },
   write: false
 })
 

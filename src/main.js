@@ -33,6 +33,14 @@ function showStatus(message) { status.textContent = message }
 
 function render() {
   try {
+    if (/^\s*@start/.test(source.value)) {
+      const element = document.createElement('div')
+      element.className = 'plantuml'
+      preview.replaceChildren(element)
+      renderDiagrams([{ element, source: source.value }])
+      notice.hidden = true
+      return
+    }
     const result = renderAsciiDoc(source.value, document)
     preview.replaceChildren(result.fragment)
     renderDiagrams(result.diagrams)

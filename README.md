@@ -17,11 +17,13 @@ In Orca, enable plugins in **Settings → Plugins**, add this repository under *
 
 `[plantuml]` listing (`----`) and literal (`....`) blocks are rendered as diagrams in the preview. `@startuml`/`@enduml` are added when missing. Rendering runs fully offline with the official [`@plantuml/core`](https://www.npmjs.com/package/@plantuml/core) engine (PlantUML compiled to JavaScript, MIT) bundled in the editor: no Java, no PlantUML server, nothing leaves the machine. Syntax errors are shown in place of the diagram.
 
+Opening a `.puml` or `.plantuml` file shows the diagram directly. The `C4` and `tupadr3` standard libraries are bundled (`vendor/`, taken from [plantuml.github.io/plantuml/js-plantuml](https://plantuml.github.io/plantuml/js-plantuml/); tupadr3 is gzipped and only inflated when a diagram includes it), so `!include <C4/...>`, `!include <tupadr3/...>` and C4-PlantUML GitHub URLs work offline.
+
 ## Limits
 
 Orca provides custom editors with the open document's text, but not its path or access to adjacent files. `include::` directives and image files therefore cannot be resolved by this plugin. The preview marks images as unavailable and shows a notice when the source contains includes or images. Relative links are disabled in the preview. Use Orca's Source view for documents needing those resources.
 
-For the same reason, PlantUML diagrams stored in separate files (`include::diagram.puml[]` inside a `[plantuml]` block, or the `plantuml::diagram.puml[]` macro) are shown as unavailable; write the diagram inline to preview it. `!include` of local files, of the PlantUML standard library (`<C4/...>`, `<tupadr3/...>`) or of URLs, and `!theme`, are not resolved because the editor has no network access.
+For the same reason, PlantUML diagrams stored in separate files (`include::diagram.puml[]` inside a `[plantuml]` block, or the `plantuml::diagram.puml[]` macro) are shown as unavailable; write the diagram inline to preview it. `!include` of local files, of other standard libraries or of other URLs, and `!theme`, are not resolved because the editor has no network access.
 
 The preview uses Asciidoctor.js in secure mode and sanitizes the resulting HTML. All JavaScript dependencies are bundled locally; the plugin does not request host capabilities or load resources from a CDN.
 

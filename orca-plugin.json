@@ -4,7 +4,7 @@
   "id": "asciidoc-viewer",
   "publisher": "mbirepinte",
   "name": "AsciiDoc Viewer",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "execution": "sandboxed-ui",
   "description": "Edit AsciiDoc source beside a live preview in Orca, with PlantUML diagrams rendered offline.",
   "icon": "assets/icon.png",
@@ -27,7 +27,9 @@
         "id": "asciidoc",
         "title": "AsciiDoc Preview",
         "extensions": [
-          ".adoc"
+          ".adoc",
+          ".puml",
+          ".plantuml"
         ],
         "entry": "editor/index.html",
         "priority": "default",
